@@ -1,4 +1,6 @@
 const express = require('express');
+const bcrypt = require('bcrypt-nodejs');
+
 
 const app = express();
 
@@ -26,7 +28,7 @@ const database = {
 };
 
 app.get('/', (req, res) => {
-    res.send('this is working');
+    res.send(database.users);
 });
 
 app.post('/signin', (req, res) => {
@@ -62,12 +64,34 @@ app.get('/profile/:id', (req, res) => {
             res.json(user);
         }
             
-        })
+    });
 
     if (!found) {
         res.status(404).json('no such user');
     }
 });
+
+
+app.put('/image', (req, res) => {
+    const { id } = req.body;
+    let found = false;
+
+    database.users.forEach(user => {
+        if (user.id === id) {
+            found = true;
+            user.entries++
+            res.json(user.entries);
+        }
+            
+    });
+
+    if (!found) {
+        res.status(404).json('no such user');
+    }
+});
+
+
+
 
 app.listen(3000, () => {
     console.log('app is running on port 3000');
