@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
-const { response } = require('express');
 
 const db = knex({
     client: 'pg',
@@ -68,45 +67,49 @@ app.post('/register', (req, res) => {
         .then(user => {
         res.json(user[0]);
      })
-     .catch(err => res.status(400).json(err))
+     .catch(err => res.status(400).json('unable to register'))
     
 });
 
 
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
-    let found = false;
+    
+    db.select('*').from('users').where({id: id})
+        .then(user => {
+            if (user.length) {
+                res.json(user[0])
+            } else {
+                res.status(400).json('Not found')
+            }
+        })
+    .catch(err => res.status(400).json('error getting user'))
 
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            res.json(user);
-        }
-            
-    });
 
-    if (!found) {
-        res.status(404).json('not found');
-    }
+    // if (!found) {
+    //     res.status(404).json('not found');
+    // }
 });
 
 
 app.put('/image', (req, res) => {
     const { id } = req.body;
-    let found = false;
 
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            user.entries++
-            res.json(user.entries);
-        }
-            
-    });
-
-    if (!found) {
-        res.status(404).json('no such user');
-    }
+    db('users')
+        .where('id', '=', id)
+        .increment('entries', 1)
+        .returning('entries')
+        .then(entries => {
+            console.log(entries[0].entries);
+            res.json(entries[0].entries);
+        })
+        .catch(err => res.status(400).json('unable to get entries'))
+    // database.users.forEach(user => {
+    //     if (user.id === id) {
+    //         found = true;
+    //         user.entries++
+    //         res.json(user.entries);
+    //     }
 });
 
 
