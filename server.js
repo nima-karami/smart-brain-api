@@ -1,10 +1,12 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
-
+const cors = require('cors');
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
 
 const database = {
     users: [
@@ -33,7 +35,7 @@ app.get('/', (req, res) => {
 
 app.post('/signin', (req, res) => {
     if (req.body.email === database.users[0].email && req.body.password === database.users[0].password) {
-        res.json('singing in...');
+        res.json(database.users[0]);
     } else {
         res.status(400).json('error logging in');
     }
@@ -42,7 +44,7 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
     database.users.push({
-            id: '125',
+            id: '126',
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
@@ -50,7 +52,7 @@ app.post('/register', (req, res) => {
             joined: new Date()
     });
 
-    res.send(database.users);
+    res.json(database.users[database.users.length-1]);
 });
 
 
@@ -67,7 +69,7 @@ app.get('/profile/:id', (req, res) => {
     });
 
     if (!found) {
-        res.status(404).json('no such user');
+        res.status(404).json('not found');
     }
 });
 
