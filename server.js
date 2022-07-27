@@ -18,7 +18,9 @@ const db = knex({
     }
 });
 
-// app.use(cors());
+app.use(
+    cors();
+    header('Access-Control-Allow-Origin: *'); );
 
 const app = express();
 
