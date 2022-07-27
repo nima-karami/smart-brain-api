@@ -18,12 +18,11 @@ const db = knex({
     }
 });
 
+// app.use(cors());
 
 const app = express();
 
 app.use(express.json());
-
-app.use(cors());
 
 app.get('/' , (req, res) => {res.send('app is working')});
 
