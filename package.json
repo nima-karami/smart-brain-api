@@ -1,5 +1,9 @@
 {
   "name": "smart-brain-api",
+  "engines": {
+    "npm": "8.5.5",
+    "node": "16.15.0"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
