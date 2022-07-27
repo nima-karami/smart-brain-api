@@ -7,13 +7,14 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-
 const db = knex({
     client: 'pg',
     connection: {
-        connectionString : process.env.DATABASE_URL,
-        ssl: true
+        host : 'ec2-44-208-88-195.compute-1.amazonaws.com',
+        port : 5432,
+        user : 'xcbriqaqqsjrqv',
+        password : '4b26e14f4c9b33530e4390c34b0968bccf1b49256e848f3cfb531099adb2b647',
+        database : 'de0jir8mqav17p'
     }
 });
 
