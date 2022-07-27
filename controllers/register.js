@@ -1,14 +1,15 @@
+const knex = require('knex');
+const bcrypt = require('bcrypt-nodejs');
+const db = knex({
+    client: 'pg',
+    connection: {
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    }
+});
+
 const handleRegister = (req, res) => {
-    const {email, name, password} = req.body;
-    const bcrypt = require('bcrypt-nodejs');
-    const db = knex({
-        client: 'pg',
-        connection: {
-            connectionString: process.env.DATABASE_URL,
-            ssl: true,
-        }
-    });
-    
+    const {email, name, password} = req.body;   
 
     if (!email || !name || !password) {
         return res.status(400).json('incorrect form submission')
